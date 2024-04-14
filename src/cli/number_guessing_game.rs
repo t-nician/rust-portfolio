@@ -24,7 +24,7 @@ impl NumberGuessingGaming {
         let range_start = self.guess_range_start;
         let range_end = self.guess_range_end;
 
-        println!("The number is between {range_start} and {range_end}");
+        println!("The number is between {range_start} and {range_end}. (Say exit to leave the game)");
     }
 
     pub fn new_number(&mut self) {
