@@ -1,16 +1,16 @@
 use rand::Rng;
 
 pub struct ProtectedNumber {
-    key: Vec<u8>,
-    data: Vec<u8>
+    key: [u8; 8],
+    data: [u8; 8]
 }
 
 
 impl ProtectedNumber {
     pub fn new(number: i64) -> ProtectedNumber {
         let mut protected_number = ProtectedNumber {
-            key: Vec::new(),
-            data: Vec::new()
+            key: [0 as u8; 8],
+            data: [0 as u8; 8]
         };
 
         protected_number.set_number(number);
@@ -31,16 +31,13 @@ impl ProtectedNumber {
 
     pub fn set_number(&mut self, number: i64) {
         let number_as_bytes = number.to_be_bytes();
-
-        self.key.clear();
-        self.data.clear();
   
-        for index in 0..number_as_bytes.len() {
+        for index in 0..8 {
             let key_byte = rand::thread_rng().gen::<u8>();
             let protected_byte = number_as_bytes[index] ^ key_byte;
 
-            self.key.push(key_byte);
-            self.data.push(protected_byte);
+            self.key[index] = key_byte;
+            self.data[index] = protected_byte;
         }   
     }
 }
