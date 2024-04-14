@@ -1,6 +1,15 @@
-mod interface; // Top layer for accessing projects.
+mod tool;
+mod cli;
+mod ui;
+
+
+use cli::number_guessing_game::NumberGuessingGaming;
+
+
 
 fn main() {
-    interface::testa();
+    
+    NumberGuessingGaming::new();
+
     println!("Hello, world!");
 }
