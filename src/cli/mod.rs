@@ -1,9 +1,13 @@
+mod conways_game_of_life;
 mod number_guessing_game;
-pub mod protected_number;
+mod protected_number;
 
 use std::io;
 use rand::Rng;
+
 use number_guessing_game::NumberGuessingGaming;
+
+use self::conways_game_of_life::ConwaysGame;
 
 
 pub fn get_input() -> String {
@@ -55,4 +59,24 @@ pub fn protected_number_loop() {
             Err(_) => {}
         }
     }
+}
+
+
+pub fn conways_game_loop() {
+    let mut game = ConwaysGame::new();
+
+    loop {
+        game.game_step();
+        game.display_grid();
+
+        println!("Enter 'exit' to break the loop, hold enter and watch!");
+        let result = get_input();
+
+        if result.trim().to_lowercase() == "exit" {
+            break;
+        }
+
+    }
+    //game.game_step();
+    //game.display_grid();
 }
