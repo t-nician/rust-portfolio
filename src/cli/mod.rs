@@ -1,13 +1,14 @@
 mod conways_game_of_life;
 mod number_guessing_game;
 mod protected_number;
+mod jump_game;
 
-use std::io;
+use core::time;
+use std::{io, thread};
 use rand::Rng;
 
 use number_guessing_game::NumberGuessingGaming;
-
-use self::conways_game_of_life::ConwaysGame;
+use conways_game_of_life::ConwaysGame;
 
 
 pub fn get_input() -> String {
@@ -79,4 +80,15 @@ pub fn conways_game_loop() {
     }
     //game.game_step();
     //game.display_grid();
+}
+
+
+pub fn jump_game_loop() {
+    let mut game = jump_game::JumpGame::new();
+    let delay = time::Duration::from_millis(500);
+
+    loop {
+        game.update_and_display();
+        thread::sleep(delay);
+    }
 }

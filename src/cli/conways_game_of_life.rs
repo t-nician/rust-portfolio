@@ -1,7 +1,6 @@
 use rand::Rng;
 
 
-
 static GRID_SIZE_X: i64 = 10;
 static GRID_SIZE_Y: i64 = 50;
 
