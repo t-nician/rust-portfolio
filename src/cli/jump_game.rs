@@ -9,14 +9,18 @@ enum TileType {
 
 struct Collision {
     size_x: usize,
-    size_y: usize
+    size_y: usize,
+    position_x: usize,
+    position_y: usize
 }
 
 impl Collision {
-    pub fn new(size_x: usize, size_y: usize) -> Collision {
+    pub fn new(size_x: usize, size_y: usize, position_x: usize, position_y: usize) -> Collision {
         Collision {
             size_x: size_x,
-            size_y: size_y
+            size_y: size_y,
+            position_x: position_x,
+            position_y: position_y
         }
     }
 }
@@ -28,11 +32,13 @@ struct Platform {
 
 
 impl Platform {
-    pub fn new(size_x: usize, size_y: usize) -> Platform {
+    pub fn new(size_x: usize, size_y: usize, position_x: usize, position_y: usize) -> Platform {
         Platform {
             collision: Collision::new(
                 size_x,
-                size_y
+                size_y,
+                position_x,
+                position_y
             )
         }
     }
@@ -45,11 +51,13 @@ struct Player {
 
 
 impl Player {
-    pub fn new(size_x: usize, size_y: usize) -> Player {
+    pub fn new(size_x: usize, size_y: usize, position_x: usize, position_y: usize)  -> Player {
         Player {
             collision: Collision::new(
                 size_x,
-                size_y
+                size_y,
+                position_x,
+                position_y
             )
         }
     }
@@ -68,17 +76,23 @@ impl JumpGame {
         let mut game = JumpGame {
             display: Vec::new(),
             platforms: Vec::new(),
-            player: Player::new(2, 2)
+            player: Player::new(2, 2, 5, 5)
         };
 
         game.populate_display();
         
+        game.platforms.push(
+            Platform::new(10, 1, 1, 8)
+        );
 
         return game;
     }
 
     pub fn update_and_display(&mut self) {
         print!("\x1B[2J\x1B[1;1H");
+        
+        let mut display_string = String::new();
+
         
     }
 
