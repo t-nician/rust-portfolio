@@ -93,7 +93,34 @@ impl JumpGame {
         
         let mut display_string = String::new();
 
-        
+        self.update_collisions_to_display();
+
+        for x in 0..DISPLAY_SIZE_X {
+            for y in 0..DISPLAY_SIZE_Y {
+                match self.display[x][y] {
+                    TileType::Platform => { display_string = display_string + "X" }
+                    TileType::Player => { display_string = display_string + "O" }
+                    TileType::Empty => { display_string = display_string + " " }
+                }
+            }
+
+            display_string = display_string + "\n";
+        }
+
+        println!("{display_string}");
+
+    }
+
+    fn update_collisions_to_display(&mut self) {
+        for x in 0..DISPLAY_SIZE_X {
+            for y in 0..DISPLAY_SIZE_Y {
+                self.display[x][y] = TileType::Empty;
+            }
+        }
+
+        for platform in &self.platforms {
+            
+        }
     }
 
     fn populate_display(&mut self) {
