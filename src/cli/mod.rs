@@ -85,10 +85,11 @@ pub fn conways_game_loop() {
 
 pub fn jump_game_loop() {
     let mut game = jump_game::JumpGame::new();
-    let delay = time::Duration::from_millis(500);
+    let delay = time::Duration::from_millis(16);
 
     loop {
         game.update_and_display();
+        
         thread::sleep(delay);
     }
 }
