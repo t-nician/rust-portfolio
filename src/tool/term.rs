@@ -1,6 +1,78 @@
+use core::time;
+use std::time::Duration;
+
+enum PixelType {
+    Platform,
+    Player,
+    Empty
+}
+
+
+struct DisplayObject {
+    size_x: usize,
+    size_y: usize,
+    position_x: usize,
+    position_y: usize
+}
+
+
+impl DisplayObject {
+    pub fn new(size_x: usize, size_y: usize, position_x: usize, position_y: usize) -> DisplayObject {
+        DisplayObject {
+            size_x: size_x,
+            size_y: size_y,
+            position_x: position_x,
+            position_y: position_y
+        }
+    }
+}
+
+
+pub struct DisplayEngine {
+    display_objects: Vec<DisplayObject>,
+    display_pixels: Vec<Vec<PixelType>>,
+    display_dimensions: (usize, usize),
+    display_delay: Duration
+}
+
+
+impl DisplayEngine {
+    pub fn new(display_size: (usize, usize), frame_time_miliseconds: u64) -> DisplayEngine {
+        let mut engine = DisplayEngine {
+            display_dimensions: display_size,
+            display_objects: Vec::new(),
+            display_pixels: Vec::new(),
+            display_delay: time::Duration::from_millis(frame_time_miliseconds)
+        };
+
+        for x in 0..display_size.0 {
+            for _ in 0..display_size.1 {
+                engine.display_pixels[x].push(PixelType::Empty);
+            }
+        }
+
+        return engine;
+    }
+
+
+    pub fn create_platform(&mut self, platform_size: (usize, usize), platform_position: (usize, usize)) {
+        self.display_objects.push(DisplayObject::new(platform_size.0, platform_size.1, platform_position.0, platform_position.1))
+    }
+
+
+    fn update_display_without_output(&mut self) {
+        for display_object in &self.display_objects {
+            
+        }
+    }
+
+}
+
+
+/*
 use std::{thread, time::Duration};
 use core::time;
-
+ 
 enum TileType {
     Platform,
     Player,
@@ -94,4 +166,4 @@ impl DisplayEngine {
             }
         }
     }
-}
+}*/
