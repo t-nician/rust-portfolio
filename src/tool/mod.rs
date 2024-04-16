@@ -1,11 +1,32 @@
+use core::time;
+use std::thread;
+
 mod termengine;
 
 
 pub fn draw_loop() {
     let mut board = termengine::DrawingBoard::new(10, 10);
+    let delay = time::Duration::from_millis(1);
 
     board.create_platform(2, 2, 2, 3);
-    board.output_display();
+
+    let mut offset = 0.0;
+    let mut goto = 0.025;
+
+    loop {
+        if offset + goto > 8 as f64 {
+            goto = -0.025;
+        } else if offset + goto < 1 as f64 {
+            goto = 0.025;
+        }
+
+        offset += goto;
+
+        board.objects[0].position_y = offset as usize;
+        board.output_display();
+
+        thread::sleep(delay);
+    }
     /*let mut map = termengine::TileMap::new(10, 10);
 
     map.draw_object(

@@ -8,8 +8,8 @@ pub enum PixelType {
 
 pub struct DrawableObject {
     pixel_type: PixelType,
-    position_x: usize,
-    position_y: usize,
+    pub position_x: usize,
+    pub position_y: usize,
     size_x: usize,
     size_y: usize
 }
@@ -36,7 +36,7 @@ impl DrawableObject {
 
 pub struct DrawingBoard {
     display: Vec<Vec<PixelType>>,
-    objects: Vec<DrawableObject>,
+    pub objects: Vec<DrawableObject>,
     size_x: usize,
     size_y: usize
 }
@@ -81,7 +81,8 @@ impl DrawingBoard {
             output = output + "\n";
         }
 
-        println!("OUTPUT: {output}");
+        print!("\x1B[2J\x1B[1;1H");
+        println!("{output}");
     }
 
     fn bound_index(&self, x: usize, y: usize) -> (usize, usize) {
