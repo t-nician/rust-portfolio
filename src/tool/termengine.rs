@@ -1,4 +1,131 @@
 #[derive(Clone, Copy)]
+pub enum PixelType {
+    Platform,
+    Player,
+    Empty
+}
+
+
+pub struct DrawableObject {
+    pixel_type: PixelType,
+    position_x: usize,
+    position_y: usize,
+    size_x: usize,
+    size_y: usize
+}
+
+
+impl DrawableObject {
+    pub fn new(
+        pixel_type: PixelType,
+        position_x: usize, 
+        position_y: usize, 
+        size_x: usize, 
+        size_y: usize
+    ) -> DrawableObject {
+        DrawableObject {
+            pixel_type: pixel_type,
+            position_x: position_x,
+            position_y: position_y,
+            size_x: size_x,
+            size_y: size_y
+        }
+    }
+}
+
+
+pub struct DrawingBoard {
+    display: Vec<Vec<PixelType>>,
+    objects: Vec<DrawableObject>,
+    size_x: usize,
+    size_y: usize
+}
+
+
+impl DrawingBoard {
+    pub fn new(size_x: usize, size_y: usize) -> DrawingBoard {
+        DrawingBoard {
+            display: Vec::new(),
+            objects: Vec::new(),
+            size_x: size_x,
+            size_y: size_y
+        }
+    }
+
+    pub fn create_platform(&mut self, position_x: usize, position_y: usize, size_x: usize, size_y: usize) {
+        let new_object = DrawableObject::new(
+            PixelType::Platform,
+            position_x,
+            position_y,
+            size_x,
+            size_y
+        );
+
+        self.objects.push(new_object);
+    }
+
+    pub fn output_display(&mut self) {
+        self.repopulate_display();
+        self.draw_objects_to_display();
+
+        let mut output = String::new();
+
+        for x in 0..self.size_x {
+            for y in 0..self.size_y {
+                match self.display[x][y] {
+                    PixelType::Platform => { output = output + "#"; }
+                    PixelType::Player => { output = output + "X"; }
+                    PixelType::Empty => { output = output + " "; }
+                }
+            }
+            output = output + "\n";
+        }
+
+        println!("OUTPUT: {output}");
+    }
+
+    fn bound_index(&self, x: usize, y: usize) -> (usize, usize) {
+        let mut pair = (x, y);
+
+        if x > self.size_x - 1 { pair.0 = self.size_x - 1 }
+        if y > self.size_y - 1 { pair.1 = self.size_y - 1 }
+
+        return pair;
+    }
+
+    fn draw_objects_to_display(&mut self) {
+        for object in &self.objects {
+            for x_offset in 0..object.size_x {
+                for y_offset in 0..object.size_y {
+                    let (x, y) = self.bound_index(
+                        object.position_x + x_offset, 
+                        object.position_y + y_offset
+                    );
+
+                    self.display[x][y] = object.pixel_type;
+                }
+            }
+        }
+    }
+
+    fn repopulate_display(&mut self) {
+        self.display.clear();
+
+        for x in 0..self.size_x {
+            self.display.push(Vec::new());
+            for _ in 0..self.size_y {
+                self.display[x].push(PixelType::Empty)
+            }
+        }
+
+
+    }
+}
+
+
+
+/*
+#[derive(Clone, Copy)]
 pub enum TileType {
     Platform,
     Player,
@@ -73,7 +200,7 @@ impl TileMap {
             }
         }
     }
-}
+}*/
 
 /*use core::time;
 use std::time::Duration;

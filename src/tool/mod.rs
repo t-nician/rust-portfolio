@@ -2,7 +2,11 @@ mod termengine;
 
 
 pub fn draw_loop() {
-    let mut map = termengine::TileMap::new(10, 10);
+    let mut board = termengine::DrawingBoard::new(10, 10);
+
+    board.create_platform(2, 2, 2, 3);
+    board.output_display();
+    /*let mut map = termengine::TileMap::new(10, 10);
 
     map.draw_object(
         termengine::TileType::Platform, 
@@ -19,7 +23,7 @@ pub fn draw_loop() {
     );
 
     engine.create_platform((10, 1), (1, 1));
-    println!("{:#?}", engine.display_pixels);
+    println!("{:#?}", engine.display_pixels);*/
 
     engine.display_output();*/
 
