@@ -1,4 +1,4 @@
-const DISPLAY_SIZE_X: usize = 10;
+const DISPLAY_SIZE_X: usize = 50;
 const DISPLAY_SIZE_Y: usize = 10;
 
 enum TileType {
@@ -82,7 +82,7 @@ impl JumpGame {
         game.populate_display();
         
         game.platforms.push(
-            Platform::new(10, 1, 1, 8)
+            Platform::new(1, 10, 1, 8)
         );
 
         return game;
@@ -115,10 +115,10 @@ impl JumpGame {
         let mut new_position: (usize, usize) = (0, 0);
 
         if x < 0 { new_position.0 = DISPLAY_SIZE_X - 1 } else { new_position.0 = x as usize; }
-        if x > DISPLAY_SIZE_X as i64 { new_position.0 = DISPLAY_SIZE_X - 1 }
+        if x > DISPLAY_SIZE_X as i64 - 1 { new_position.0 = DISPLAY_SIZE_X - 1 }
 
         if y < 0 { new_position.1 = DISPLAY_SIZE_Y - 1 } else { new_position.1 = y as usize; }
-        if y > DISPLAY_SIZE_Y as i64 { new_position.1 = DISPLAY_SIZE_Y - 1 }
+        if y > DISPLAY_SIZE_Y as i64 - 1 { new_position.1 = DISPLAY_SIZE_Y - 1 }
 
         return new_position;
     }
@@ -133,7 +133,12 @@ impl JumpGame {
         for platform in &self.platforms {
             for x in 0..platform.collision.size_x as i64 {
                 for y in 0..platform.collision.size_y as i64 {
-                    
+                    let (target_x, target_y) = JumpGame::wrap_index(
+                        x + platform.collision.position_x as i64, 
+                        y + platform.collision.position_y as i64
+                    );
+
+                    self.display[target_x][target_y] = TileType::Platform;
                 }
             }
         }

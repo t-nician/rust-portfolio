@@ -1,9 +1,10 @@
+mod tool;
 mod cli;
 mod ui;
 
 
 fn main() {
-    let options: Vec<&str> = vec!["NumberGuessingGame", "ProtectedNumber", "ConwaysGameOfLife", "JumpGame"];
+    let options: Vec<&str> = vec!["NumberGuessingGame", "ProtectedNumber", "ConwaysGameOfLife", "JumpGame", "Draw"];
     let mut compiled_str = String::new();
 
     for option in options {
@@ -20,6 +21,7 @@ fn main() {
             "protectednumber" => { cli::protected_number_loop(); }
             "conwaysgameoflife" => { cli::conways_game_loop(); }
             "jumpgame" => { cli::jump_game_loop(); }
+            "draw" => { tool::draw_loop(); }
 
             _ => { println!("Invalid option!") }
         }
