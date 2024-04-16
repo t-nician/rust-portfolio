@@ -50,7 +50,13 @@ impl DisplayEngine {
     }
 
     pub fn create_platform(&mut self, size_x: usize, size_y: usize, position_x: usize, position_y: usize) {
-        
+        for offset_x in 0..size_x {
+            for offset_y in 0..size_y {
+                let (x, y) = self.wrap_index(position_x + offset_x, position_y + offset_y);
+
+                self.display_grid[x][y].tile_type = TileType::Platform;
+            }
+        }
     }
 
     fn wrap_index(&self, x: usize, y: usize) -> (usize, usize) {
