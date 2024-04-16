@@ -90,6 +90,8 @@ pub fn jump_game_loop() {
     loop {
         game.update_and_display();
         
+        // setup keypress detection to cancel game.
+
         thread::sleep(delay);
     }
 }
