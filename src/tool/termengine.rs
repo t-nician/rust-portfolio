@@ -1,36 +1,118 @@
-use core::time;
-use std::time::Duration;
-
-enum PixelType {
+#[derive(Clone, Copy)]
+pub enum TileType {
     Platform,
     Player,
     Empty
 }
 
 
-struct DisplayObject {
+pub struct TileMap {
+    tiles: Vec<Vec<TileType>>,
     size_x: usize,
-    size_y: usize,
-    position_x: usize,
-    position_y: usize
+    size_y: usize
 }
 
 
-impl DisplayObject {
-    pub fn new(size_x: usize, size_y: usize, position_x: usize, position_y: usize) -> DisplayObject {
-        DisplayObject {
+impl TileMap {
+    pub fn new(size_x: usize, size_y: usize) -> TileMap {
+        let mut map = TileMap {
+            tiles: Vec::new(),
             size_x: size_x,
-            size_y: size_y,
-            position_x: position_x,
-            position_y: position_y
+            size_y: size_y
+        };
+
+        map.populate_map();
+
+        return map;
+    }
+
+    pub fn draw_object(&mut self, tile_type: TileType, position_x: usize, position_y: usize, size_x: usize, size_y: usize) {
+        for x_offset in 0..size_x {
+            for y_offset in 0..size_y {
+                let (x, y) = self.wrap_index(
+                    position_x + x_offset, 
+                    position_y + y_offset
+                );
+
+                self.tiles[x][y] = tile_type;
+            }
+        }
+    }
+
+    pub fn output_map(&self) {
+        let mut output = String::new();
+
+        for x in 0..self.size_x {
+            for y in 0..self.size_y {
+                match self.tiles[x][y] {
+                    TileType::Platform => { output = output + "#" }
+                    TileType::Player => { output = output + "X" }
+                    TileType::Empty => { output = output + " " }
+                }
+            }
+            output = output + "\n";
+        }
+
+        println!("{output}");
+    }
+
+    pub fn wrap_index(&self, x: usize, y: usize) -> (usize, usize) {
+        let mut pair = (x, y);
+
+        if x > self.size_x - 1 { pair.0 = 0 }
+        if y > self.size_y - 1 { pair.1 = 0 }
+
+        return pair;
+    }
+
+    fn populate_map(&mut self) {
+        for x in 0..self.size_x {
+            self.tiles.push(Vec::new());
+            for _ in 0..self.size_y {
+                self.tiles[x].push(TileType::Empty)
+            }
         }
     }
 }
 
+/*use core::time;
+use std::time::Duration;
 
+#[derive(Clone, Copy)]
+#[derive(Debug)]
+pub enum PixelType {
+    Platform,
+    Player,
+    Empty
+}
+
+
+#[derive(Debug)]
+struct DisplayObject {
+    size_x: usize,
+    size_y: usize,
+    position_x: usize,
+    position_y: usize,
+    pixel_type: PixelType
+}
+
+
+impl DisplayObject {
+    pub fn new(size_x: usize, size_y: usize, position_x: usize, position_y: usize, pixel_type: PixelType) -> DisplayObject {
+        DisplayObject {
+            size_x: size_x,
+            size_y: size_y,
+            position_x: position_x,
+            position_y: position_y,
+            pixel_type: pixel_type
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct DisplayEngine {
     display_objects: Vec<DisplayObject>,
-    display_pixels: Vec<Vec<PixelType>>,
+    pub display_pixels: Vec<Vec<PixelType>>,
     display_dimensions: (usize, usize),
     display_delay: Duration
 }
@@ -54,19 +136,49 @@ impl DisplayEngine {
         return engine;
     }
 
-
     pub fn create_platform(&mut self, platform_size: (usize, usize), platform_position: (usize, usize)) {
-        self.display_objects.push(DisplayObject::new(platform_size.0, platform_size.1, platform_position.0, platform_position.1))
+        self.display_objects.push(DisplayObject::new(platform_size.0, platform_size.1, platform_position.0, platform_position.1, PixelType::Platform));
+        self.update_display_without_output();
     }
 
+    pub fn display_output(&self) {
+        let mut output = String::new();
+
+        for x in 0..self.display_dimensions.0 {
+            for y in 0..self.display_dimensions.1 {
+                match self.display_pixels[x][y] {
+                    PixelType::Platform => { output = output + "#" }
+                    PixelType::Player => { output = output + "X" }
+                    PixelType::Empty => { output = output + " " }
+                }
+            }
+        }
+
+        println!("{output}");
+    }
+
+    fn index_wrap(&self, x: usize, y: usize) -> (usize, usize) {
+        let mut pair = (x, y);
+
+        if x > self.display_dimensions.0 - 1 { pair.0 = 0 }
+        if y > self.display_dimensions.1 - 1 { pair.1 = 0 }
+
+        return pair;
+    }
 
     fn update_display_without_output(&mut self) {
         for display_object in &self.display_objects {
-            
+            for offset_x in 0..display_object.size_x {
+                for offset_y in 0..display_object.size_y {
+                    let (x, y) = self.index_wrap(display_object.position_x + offset_x, display_object.position_y + offset_y);
+
+                    self.display_pixels[x][y] = display_object.pixel_type;
+                }
+            }
         }
     }
 
-}
+}*/
 
 
 /*
