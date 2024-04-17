@@ -6,6 +6,128 @@ pub enum PixelType {
 }
 
 
+pub struct Vector2 {
+    x: usize,
+    y: usize,
+}
+
+
+impl Vector2 {
+    pub fn new(x: usize, y: usize) -> Vector2 {
+        Vector2 {
+            x: x,
+            y: y
+        }
+    }
+}
+
+
+struct DrawableObject {
+    size: Vector2,
+    position: Vector2,
+    pixel_type: PixelType
+}
+
+
+impl DrawableObject {
+    pub fn new(pixel_type: PixelType, position: Vector2, size: Vector2) -> DrawableObject {
+        DrawableObject {
+            size: size,
+            position: position,
+            pixel_type: pixel_type
+        }
+    }
+}
+
+
+pub struct DisplayEngine {
+    objects: Vec<DrawableObject>,
+    pixels: Vec<Vec<PixelType>>,
+    size: Vector2
+}
+
+
+impl DisplayEngine {
+    pub fn new(size: Vector2) -> DisplayEngine {
+        let mut engine = DisplayEngine {
+            objects: Vec::new(),
+            pixels: Vec::new(),
+            size: size
+        };
+
+        for x in 0..engine.size.x {
+            engine.pixels.push(Vec::new());
+            for _ in 0..engine.size.y {
+                engine.pixels[x].push(PixelType::Empty);
+            }
+        }
+
+        return engine;
+    }   
+
+    pub fn create_platform(&mut self, position: Vector2, size: Vector2) {
+        self.objects.push(
+            DrawableObject::new(PixelType::Platform, position, size)
+        )
+    }
+
+    pub fn display(&mut self) {
+        let mut output = String::new();
+
+        for x in 0..self.size.x {
+            for y in 0..self.size.y {
+                self.pixels[x][y] = PixelType::Empty;
+            }
+        }
+
+        for object in &self.objects {
+            for offset_x in 0..object.size.x {
+                for offset_y in 0..object.size.y {
+                    let target_position = self.wrap_index(
+                        Vector2::new(object.position.x + offset_x, object.position.y + offset_y)
+                    );
+
+                    self.pixels[target_position.x][target_position.y] = object.pixel_type;
+                }
+            }
+        }
+
+        for x in 0..self.size.x {
+            for y in 0..self.size.y {
+                match self.pixels[x][y] {
+                    PixelType::Empty => { output = output + " " }
+                    PixelType::Player => { output = output + "X" }
+                    PixelType::Platform => { output = output + "#" }
+                }
+            }
+            output = output + "\n";
+        }
+
+        println!("{output}");
+    }
+
+    fn wrap_index(&self, position: Vector2) -> Vector2 {
+        let mut new_position = Vector2::new(position.x, position.y);
+
+        if position.x > self.size.x - 1 { new_position.x = self.size.x - 1 }
+        if position.y > self.size.y - 1 { new_position.y = self.size.y - 1 }
+
+        return new_position;
+    }
+}
+
+
+
+
+
+/* #[derive(Clone, Copy)]
+pub enum PixelType {
+    Platform,
+    Player,
+    Empty
+}
+
+
 pub struct DrawableObject {
     pixel_type: PixelType,
     pub position_x: usize,
@@ -121,8 +243,7 @@ impl DrawingBoard {
 
 
     }
-}
-
+}*/
 
 
 /*

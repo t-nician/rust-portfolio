@@ -1,11 +1,24 @@
 use core::time;
 use std::thread;
 
-mod termengine;
+mod asciiengine;
+
+use asciiengine::{DisplayEngine, Vector2};
 
 
 pub fn draw_loop() {
-    let mut board = termengine::DrawingBoard::new(10, 10);
+    let mut engine = DisplayEngine::new(
+        Vector2::new(10, 10)
+    );
+
+    engine.create_platform(
+        Vector2::new(1, 1),
+        Vector2::new(1, 5)
+    );
+    
+    engine.display();
+
+    /*let mut board = termengine::DrawingBoard::new(10, 10);
     let delay = time::Duration::from_millis(1);
 
     board.create_platform(2, 2, 2, 3);
@@ -26,7 +39,7 @@ pub fn draw_loop() {
         board.output_display();
 
         thread::sleep(delay);
-    }
+    }*/
     /*let mut map = termengine::TileMap::new(10, 10);
 
     map.draw_object(
