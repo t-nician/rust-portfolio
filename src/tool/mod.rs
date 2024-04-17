@@ -3,20 +3,22 @@ use std::thread;
 
 mod asciiengine;
 
-use asciiengine::{DisplayEngine, Vector2};
+use asciiengine::{DisplayEngine, UpdateEngine, Vector2};
 
 
 pub fn draw_loop() {
-    let mut engine = DisplayEngine::new(
+    let mut display_engine = DisplayEngine::new(
         Vector2::new(10, 10)
     );
 
-    engine.create_platform(
+    let mut update_engine = UpdateEngine::new();
+
+    display_engine.create_platform(
         Vector2::new(1, 1),
         Vector2::new(1, 5)
     );
-    
-    engine.display();
+
+    display_engine.display();
 
     /*let mut board = termengine::DrawingBoard::new(10, 10);
     let delay = time::Duration::from_millis(1);

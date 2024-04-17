@@ -65,10 +65,12 @@ impl DisplayEngine {
         return engine;
     }   
 
-    pub fn create_platform(&mut self, position: Vector2, size: Vector2) {
-        self.objects.push(
-            DrawableObject::new(PixelType::Platform, position, size)
-        )
+    pub fn create_platform(&mut self, position: Vector2, size: Vector2) -> DrawableObject {
+        let mut platform_object = DrawableObject::new(PixelType::Platform, position, size);
+        
+        self.objects.push(platform_object);
+
+        return platform_object;
     }
 
     pub fn display(&mut self) {
@@ -117,7 +119,22 @@ impl DisplayEngine {
 }
 
 
+pub struct UpdateEngine {
+    
+}
 
+
+impl UpdateEngine {
+    pub fn new() -> UpdateEngine {
+        UpdateEngine {
+            
+        }  
+    }
+
+    pub fn mover(drawable_object: DrawableObject) {
+
+    }
+}
 
 
 /* #[derive(Clone, Copy)]
