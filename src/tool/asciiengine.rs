@@ -1,3 +1,94 @@
+use uuid::Uuid;
+
+pub enum ObjectType {
+    Platform,
+    Player
+}
+
+
+pub struct Dimensions {
+    x: isize,
+    y: isize
+}
+
+
+impl Dimensions { 
+    pub fn new(x: isize, y: isize) -> Dimensions { 
+
+        return Dimensions { x: x, y: y } 
+    }
+
+    pub fn add(&mut self, dimension: &Dimensions) {
+        self.x += dimension.x;
+        self.y += dimension.y;
+    }
+}
+
+
+pub struct EngineObject {
+    pub object_uuid: Uuid,
+    object_type: ObjectType,
+    object_size: Dimensions,
+    object_position: Dimensions
+}
+
+
+impl EngineObject { 
+    pub fn new(
+        object_type: ObjectType, 
+        object_size: Dimensions, 
+        object_position: Dimensions
+    ) -> EngineObject {
+
+        return EngineObject {
+            object_uuid: Uuid::new_v4(),
+            object_type: object_type,
+            object_size: object_size,
+            object_position: object_position
+        }
+    } 
+}
+
+
+pub struct Engine {
+    objects: Vec<EngineObject>,
+    size: Dimensions
+}
+
+
+impl Engine {
+    pub fn new(size: Dimensions) -> Engine {
+
+        return Engine {
+            objects: Vec::new(),
+            size: size
+        }
+    }
+
+
+    pub fn create_platform(&mut self, size: Dimensions, position: Dimensions) -> Uuid {
+        let object = EngineObject::new(
+            ObjectType::Platform,
+            size,
+            position
+        );
+
+        let uuid = object.object_uuid;
+
+        self.objects.push(object);
+
+        return uuid;
+    }
+
+
+    pub fn translate_object(&mut self, object_uuid: Uuid, translate_by: Dimensions) {
+        for object in &mut self.objects {
+            if object.object_uuid == object_uuid {
+                object.object_position.add(&translate_by);
+            }
+        }
+    }
+}
 
 
 /*#[derive(Clone, Copy)]

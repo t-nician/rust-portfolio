@@ -1,9 +1,25 @@
 use core::time;
 use std::thread;
 
+use self::asciiengine::Dimensions;
+
 mod asciiengine;
 
 pub fn draw_loop() {
+    let mut engine = asciiengine::Engine::new(
+        asciiengine::Dimensions::new(10, 10),
+    );
+
+    let object_uuid = engine.create_platform(
+        asciiengine::Dimensions::new(10, 1), 
+        asciiengine::Dimensions::new(1, 1)
+    );
+
+    let move_left = asciiengine::Dimensions::new(-1, 0);
+    let move_right = asciiengine::Dimensions::new(1, 0);
+
+    
+
     /*let mut display_engine = DisplayEngine::new(
         Vector2::new(10, 10)
     );
