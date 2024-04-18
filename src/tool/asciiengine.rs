@@ -1,4 +1,6 @@
-#[derive(Clone, Copy)]
+
+
+/*#[derive(Clone, Copy)]
 pub enum PixelType {
     Platform,
     Player,
@@ -22,7 +24,7 @@ impl Vector2 {
 }
 
 
-struct DrawableObject {
+pub struct DrawableObject {
     size: Vector2,
     position: Vector2,
     pixel_type: PixelType
@@ -41,7 +43,7 @@ impl DrawableObject {
 
 
 pub struct DisplayEngine {
-    objects: Vec<DrawableObject>,
+    pub objects: Vec<DrawableObject>,
     pixels: Vec<Vec<PixelType>>,
     size: Vector2
 }
@@ -65,12 +67,10 @@ impl DisplayEngine {
         return engine;
     }   
 
-    pub fn create_platform(&mut self, position: Vector2, size: Vector2) -> DrawableObject {
-        let mut platform_object = DrawableObject::new(PixelType::Platform, position, size);
-        
-        self.objects.push(platform_object);
-
-        return platform_object;
+    pub fn create_platform(&mut self, position: Vector2, size: Vector2) {
+        self.objects.push(
+            DrawableObject::new(PixelType::Platform, position, size)
+        );
     }
 
     pub fn display(&mut self) {
@@ -119,22 +119,22 @@ impl DisplayEngine {
 }
 
 
-pub struct UpdateEngine {
-    
+pub struct UpdateEngine <'a> {
+    movers: Vec<&'a DrawableObject>
 }
 
 
 impl UpdateEngine {
-    pub fn new() -> UpdateEngine {
+    pub fn new() -> <'a>::UpdateEngine {
         UpdateEngine {
-            
+            movers: Vec::new()
         }  
     }
 
-    pub fn mover(drawable_object: DrawableObject) {
-
+    pub fn mover(&mut self, drawable_object: &DrawableObject) {
+        self.movers.push(drawable_object);
     }
-}
+}*/
 
 
 /* #[derive(Clone, Copy)]
