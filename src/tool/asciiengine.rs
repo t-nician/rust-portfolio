@@ -1,8 +1,10 @@
 use uuid::Uuid;
 
+
 pub enum ObjectType {
     Platform,
-    Player
+    Player,
+    Empty
 }
 
 
@@ -87,6 +89,35 @@ impl Engine {
                 object.object_position.add(&translate_by);
             }
         }
+    }
+
+    pub fn output_engine(&self) {
+        let mut output = String::new();
+        let mut pixels: Vec<Vec<ObjectType>> = Vec::new();
+
+        for x in 0..self.size.x as usize {
+            pixels.push(Vec::new());
+            for _ in 0..self.size.y {
+                pixels[x].push(ObjectType::Empty);
+            }
+        }
+
+        for object in &self.objects {
+            
+        }
+
+        for x in 0..self.size.x as usize {
+            for y in 0..self.size.y as usize {
+                match pixels[x][y] {
+                    ObjectType::Empty => { output = output + " " }
+                    ObjectType::Player => { output = output + "X" }
+                    ObjectType::Platform => { output = output + "#" }
+                } 
+            }
+            output = output + "\n";
+        }
+
+        println!("{output}")
     }
 }
 

@@ -18,7 +18,7 @@ pub fn draw_loop() {
     let move_left = asciiengine::Dimensions::new(-1, 0);
     let move_right = asciiengine::Dimensions::new(1, 0);
 
-    
+    engine.output_engine();
 
     /*let mut display_engine = DisplayEngine::new(
         Vector2::new(10, 10)
