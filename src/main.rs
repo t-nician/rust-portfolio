@@ -4,7 +4,9 @@ mod cli;
 mod ui;
 
 
+
 fn main() {
+
     let options: Vec<&str> = vec!["NumberGuessingGame", "ProtectedNumber", "ConwaysGameOfLife"];
     let mut compiled_str = String::new();
 
