@@ -1,7 +1,6 @@
 mod conways_game_of_life;
 mod number_guessing_game;
 mod protected_number;
-mod jump_game;
 
 use core::time;
 use std::{io, thread};
@@ -80,18 +79,4 @@ pub fn conways_game_loop() {
     }
     //game.game_step();
     //game.display_grid();
-}
-
-
-pub fn jump_game_loop() {
-    let mut game = jump_game::JumpGame::new();
-    let delay = time::Duration::from_millis(16);
-
-    loop {
-        game.update_and_display();
-        
-        // setup keypress detection to cancel game.
-
-        thread::sleep(delay);
-    }
 }
