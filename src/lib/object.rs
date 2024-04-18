@@ -9,9 +9,9 @@ pub struct XYVector {
 
 
 pub struct Entity {
+    pub uuid: Uuid,
     pub size: XYVector,
     pub position: XYVector,
-    pub uuid: Uuid
 }
 
 
@@ -57,7 +57,7 @@ impl Entity {
         self.position += offset;
     }
 
-    
+
     pub fn relocate(&mut self, position: XYVector) {
         self.position = position;
     }
@@ -102,4 +102,25 @@ impl EntityPool {
 
         None
     }
+
+
+    pub fn get_colliding_entities(&self, uuid: Uuid) -> Vec<&Entity> {
+        let mut result = Vec::new();
+        let home_entity = self.get_entity(uuid).unwrap();
+
+        for entity in &self.entities {
+            if entity.uuid != uuid {
+                if (home_entity.position.x < entity.position.x + entity.size.x) &&
+                    (home_entity.position.x + home_entity.size.x > entity.position.x) &&
+                    (home_entity.position.y < entity.position.y + entity.size.y) && 
+                    (home_entity.position.y + home_entity.size.y > entity.position.y) {
+                        result.push(entity);
+                    }
+            }
+        }
+
+        return result;
+    }
+
+
 }

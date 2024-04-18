@@ -8,14 +8,14 @@ mod ui;
 fn main() {
     let mut pool = EntityPool::new();
     
-    let uuid = pool.create_entity(XYVector::new(2, 2), XYVector::new(4, 4));
-    let entity = pool.get_mut_entity(uuid).unwrap();
+    let entity_uuid_a = pool.create_entity(XYVector::new(2, 2), XYVector::new(1, 1));
+    let entity_uuid_b = pool.create_entity(XYVector::new(1, 1), XYVector::new(1, 1));
 
-    entity.translate(XYVector::new(1, 1));
+    for entity in pool.get_colliding_entities(entity_uuid_a) {
+        let uuid = entity.uuid;
 
-    let (x, y) = (entity.position.x, entity.position.y);
-
-    println!("{x} {y}");
+        println!("{uuid}");
+    }
 
 
 
