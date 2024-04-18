@@ -1,4 +1,4 @@
-use lib::object::*;
+use lib::entity::{*};
 
 mod tool;
 mod lib;
@@ -6,17 +6,13 @@ mod cli;
 mod ui;
 
 fn main() {
-    let mut pool = EntityPool::new();
     
-    let entity_uuid_a = pool.create_entity(XYVector::new(2, 2), XYVector::new(1, 1));
-    let entity_uuid_b = pool.create_entity(XYVector::new(1, 1), XYVector::new(1, 1));
+    let mut engine = lib::entityengine::EntityEngine::new();
 
-    for entity in pool.get_colliding_entities(entity_uuid_a) {
-        let uuid = entity.uuid;
+    engine.pool.create_entity(XYVector::new(2, 2), XYVector::new(1, 1));
+    engine.pool.create_entity(XYVector::new(1, 1), XYVector::new(3, 3));
 
-        println!("{uuid}");
-    }
-
+    
 
 
     let options: Vec<&str> = vec!["NumberGuessingGame", "ProtectedNumber", "ConwaysGameOfLife"];

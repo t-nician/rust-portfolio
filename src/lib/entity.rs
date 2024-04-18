@@ -30,6 +30,15 @@ impl XYVector {
 }
 
 
+impl ops::Add<XYVector> for XYVector {
+    type Output = XYVector;
+
+    fn add(self, _rhs: XYVector) -> XYVector {
+        XYVector::new(self.x + _rhs.x, self.y + _rhs.y)
+    }
+}
+
+
 impl ops::AddAssign<XYVector> for XYVector {
     fn add_assign(&mut self, _rhs: XYVector) {
         self.x += _rhs.x;
@@ -114,13 +123,28 @@ impl EntityPool {
                     (home_entity.position.x + home_entity.size.x > entity.position.x) &&
                     (home_entity.position.y < entity.position.y + entity.size.y) && 
                     (home_entity.position.y + home_entity.size.y > entity.position.y) {
-                        result.push(entity);
-                    }
+                    
+                    result.push(entity);
+                }
             }
         }
 
         return result;
     }
 
+
+    pub fn would_entity_collide_here(&self, size: XYVector, position: XYVector) -> bool {
+        for entity in &self.entities {
+            if (position.x < entity.position.x + entity.size.x) &&
+                (position.x + size.x > entity.position.x) &&
+                (position.y < entity.position.y + entity.size.y) && 
+                (position.y + size.y > entity.position.y) {
+                    
+                return true;
+            }
+        }
+
+        return false
+    }
 
 }
